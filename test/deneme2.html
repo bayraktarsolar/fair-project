@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Single-Line Diagram Monitoring System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .component {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .component:hover {
+            filter: brightness(1.2);
+        }
+        .energized {
+            stroke: #4CAF50;
+        }
+        .de-energized {
+            stroke: #f44336;
+        }
+        .status-panel {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .transformer-box {
+            fill: none;
+            stroke-width: 2;
+        }
+        .busbar {
+            stroke-width: 3;
+        }
+        .breaker {
+            stroke-width: 2;
+        }
+        .transformer-rating {
+            font-size: 12px;
+            fill: #4a5568;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">Power Distribution Monitoring System</h1>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- SVG Diagram -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-lg p-4">
+                <svg viewBox="0 0 800 600" class="w-full">
+                    <!-- Main Input Circuit Breaker -->
+                    <g id="mainCB" class="component breaker de-energized" onclick="toggleMainCB()">
+                        <line x1="400" y1="50" x2="400" y2="100" stroke-width="2"/>
+                        <rect x="390" y="60" width="20" height="20" fill="white" stroke-width="2"/>
+                        <text x="420" y="75" class="text-sm">26.4kV, 630A</text>
+                    </g>
+
+                    <!-- Load Disconnect & Measurement -->
+                    <g id="loadDisconnect" class="component de-energized" onclick="toggleLoadDisconnect()">
+                        <line x1="400" y1="100" x2="400" y2="150" stroke-width="2"/>
+                        <circle cx="400" cy="125" r="10" fill="white" stroke-width="2"/>
+                    </g>
+
+                    <!-- Main Busbar -->
+                    <g id="mainBusbar" class="component busbar de-energized">
+                        <line x1="100" y1="150" x2="700" y2="150" stroke-width="3"/>
+                    </g>
+
+                    <!-- Transformers and their Circuit Breakers -->
+                    <g id="transformerGroups">
+                        <!-- Transformer 1 -->
+                        <g class="transformer-unit" transform="translate(150,0)">
+                            <g id="cb1" class="component breaker de-energized" onclick="toggleTransformer(0)">
+                                <line x1="0" y1="150" x2="0" y2="200" stroke-width="2"/>
+                                <rect x="-10" y="170" width="20" height="20" fill="white" stroke-width="2"/>
+                            </g>
+                            <g id="transformer1" class="component de-energized">
+                                <rect x="-20" y="200" width="40" height="60" class="transformer-box"/>
+                                <text x="-15" y="235" class="transformer-rating">1250 kVA</text>
+                            </g>
+                        </g>
+
+                        <!-- Transformer 2 -->
+                        <g class="transformer-unit" transform="translate(250,0)">
+                            <g id="cb2" class="component breaker de-energized" onclick="toggleTransformer(1)">
+                                <line x1="0" y1="150" x2="0" y2="200" stroke-width="2"/>
+                                <rect x="-10" y="170" width="20" height="20" fill="white" stroke-width="2"/>
+                            </g>
+                            <g id="transformer2" class="component de-energized">
+                                <rect x="-20" y="200" width="40" height="60" class="transformer-box"/>
+                                <text x="-15" y="235" class="transformer-rating">1600 kVA</text>
+                            </g>
+                        </g>
+
+                        <!-- Transformer 3 -->
+                        <g class="transformer-unit" transform="translate(350,0)">
+                            <g id="cb3" class="component breaker de-energized" onclick="toggleTransformer(2)">
+                                <line x1="0" y1="150" x2="0" y2="200" stroke-width="2"/>
+                                <rect x="-10" y="170" width="20" height="20" fill="white" stroke-width="2"/>
+                            </g>
+                            <g id="transformer3" class="component de-energized">
+                                <rect x="-20" y="200" width="40" height="60" class="transformer-box"/>
+                                <text x="-15" y="235" class="transformer-rating">1600 kVA</text>
+                            </g>
+                        </g>
+
+                        <!-- Transformer 4 -->
+                        <g class="transformer-unit" transform="translate(450,0)">
+                            <g id="cb4" class="component breaker de-energized" onclick="toggleTransformer(3)">
+                                <line x1="0" y1="150" x2="0" y2="200" stroke-width="2"/>
+                                <rect x="-10" y="170" width="20" height="20" fill="white" stroke-width="2"/>
+                            </g>
+                            <g id="transformer4" class="component de-energized">
+                                <rect x="-20" y="200" width="40" height="60" class="transformer-box"/>
+                                <text x="-15" y="235" class="transformer-rating">1600 kVA</text>
+                            </g>
+                        </g>
+
+                        <!-- Transformer 5 -->
+                        <g class="transformer-unit" transform="translate(550,0)">
+                            <g id="cb5" class="component breaker de-energized" onclick="toggleTransformer(4)">
+                                <line x1="0" y1="150" x2="0" y2="200" stroke-width="2"/>
+                                <rect x="-10" y="170" width="20" height="20" fill="white" stroke-width="2"/>
+                            </g>
+                            <g id="transformer5" class="component de-energized">
+                                <rect x="-20" y="200" width="40" height="60" class="transformer-box"/>
+                                <text x="-15" y="235" class="transformer-rating">1600 kVA</text>
+                            </g>
+                        </g>
+
+                        <!-- Transformer 6 -->
+                        <g class="transformer-unit" transform="translate(650,0)">
+                            <g id="cb6" class="component breaker de-energized" onclick="toggleTransformer(5)">
+                                <line x1="0" y1="150" x2="0" y2="200" stroke-width="2"/>
+                                <rect x="-10" y="170" width="20" height="20" fill="white" stroke-width="2"/>
+                            </g>
+                            <g id="transformer6" class="component de-energized">
+                                <rect x="-20" y="200" width="40" height="60" class="transformer-box"/>
+                                <text x="-15" y="235" class="transformer-rating">1600 kVA</text>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Status Panel -->
+            <div class="status-panel">
+                <h2 class="text-xl font-bold mb-4">System Status</h2>
+                <div id="statusList" class="space-y-2">
+                    <!-- Status items will be added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const components = {
+            mainCB: { state: false, name: 'Main Circuit Breaker', dependencies: [] },
+            loadDisconnect: { state: false, name: 'Load Disconnect', dependencies: ['mainCB'] },
+            mainBusbar: { state: false, name: 'Main Busbar', dependencies: ['loadDisconnect'] },
+            transformers: Array(6).fill().map((_, i) => ({
+                state: false,
+                name: `Transformer ${i + 1}${i === 0 ? ' (1250 kVA)' : ' (1600 kVA)'}`,
+                dependencies: ['mainBusbar']
+            }))
+        };
+
+        function updateStatus() {
+            const statusList = document.getElementById('statusList');
+            statusList.innerHTML = '';
+            
+            // Add main components status
+            addStatusItem(components.mainCB.name, components.mainCB.state);
+            addStatusItem(components.loadDisconnect.name, components.loadDisconnect.state);
+            addStatusItem(components.mainBusbar.name, components.mainBusbar.state);
+            
+            // Add transformer status
+            components.transformers.forEach((transformer, i) => {
+                addStatusItem(transformer.name, transformer.state);
+            });
+        }
+
+        function addStatusItem(name, state) {
+            const statusList = document.getElementById('statusList');
+            const item = document.createElement('div');
+            item.className = `flex justify-between items-center p-2 ${state ? 'bg-green-100' : 'bg-red-100'} rounded`;
+            item.innerHTML = `
+                <span>${name}</span>
+                <span class="font-bold ${state ? 'text-green-600' : 'text-red-600'}">
+                    ${state ? 'ENERGIZED' : 'DE-ENERGIZED'}
+                </span>
+            `;
+            statusList.appendChild(item);
+        }
+
+        function toggleComponent(id) {
+            const component = components[id];
+            if (!component) return;
+
+            // Check dependencies
+            const canToggle = component.dependencies.every(dep => {
+                if (components[dep]) return components[dep].state;
+                return false;
+            });
+
+            if (!canToggle && !component.state) {
+                alert('Cannot energize component. Check dependencies.');
+                return;
+            }
+
+            component.state = !component.state;
+            
+            // Update visual state
+            const element = document.getElementById(id);
+            if (element) {
+                element.classList.toggle('energized');
+                element.classList.toggle('de-energized');
+            }
+
+            // Update dependent components
+            updateDependents(id, component.state);
+            updateStatus();
+        }
+
+        function updateDependents(id, state) {
+            if (!state) {
+                // If a component is turned off, turn off all dependent components
+                Object.entries(components).forEach(([key, component]) => {
+                    if (Array.isArray(component)) {
+                        component.forEach((item, i) => {
+                            if (item.dependencies.includes(id)) {
+                                item.state = false;
+                                const element = document.getElementById(`transformer${i + 1}`);
+                                if (element) {
+                                    element.classList.remove('energized');
+                                    element.classList.add('de-energized');
+                                }
+                                const cb = document.getElementById(`cb${i + 1}`);
+                                if (cb) {
+                                    cb.classList.remove('energized');
+                                    cb.classList.add('de-energized');
+                                }
+                            }
+                        });
+                    } else if (component.dependencies.includes(id)) {
+                        component.state = false;
+                        const element = document.getElementById(key);
+                        if (element) {
+                            element.classList.remove('energized');
+                            element.classList.add('de-energized');
+                        }
+                        updateDependents(key, false);
+                    }
+                });
+            }
+        }
+
+        function toggleMainCB() {
+            toggleComponent('mainCB');
+        }
+
+        function toggleLoadDisconnect() {
+            toggleComponent('loadDisconnect');
+        }
+
+        function toggleTransformer(index) {
+            if (components.transformers[index]) {
+                components.transformers[index].state = !components.transformers[index].state;
+                
+                // Update transformer visuals
+                const transformer = document.getElementById(`transformer${index + 1}`);
+                const cb = document.getElementById(`cb${index + 1}`);
+                
+                if (transformer && cb) {
+                    if (components.transformers[index].state) {
+                        transformer.classList.add('energized');
+                        transformer.classList.remove('de-energized');
+                        cb.classList.add('energized');
+                        cb.classList.remove('de-energized');
+                    } else {
+                        transformer.classList.remove('energized');
+                        transformer.classList.add('de-energized');
+                        cb.classList.remove('energized');
+                        cb.classList.add('de-energized');
+                    }
+                }
+                
+                updateStatus();
+            }
+        }
+
+        // Initialize status panel
+        updateStatus();
+    </script>
+</body>
+</html>
