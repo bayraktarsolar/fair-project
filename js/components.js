@@ -19,7 +19,7 @@ components = {
   },
   TMSwithEngine: {
     state: false,
-    name: "Motorlu TMŞ",
+    name: "Akım Trafosu",
     dependencies: ["loadDisconnect"],
   },
   topraklama: {
@@ -53,7 +53,7 @@ components = {
       },
       tms: { 
         state: false, 
-        name: `TMŞ ${i + 1}`,
+        name: `Trafo ${i + 1}`,
         dependencies: [`disconnector${i + 2}`]
       },
       topraklama: {

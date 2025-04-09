@@ -12,7 +12,7 @@ function updateStatus() {
   // Update transformers
   components.transformers.forEach((transformer, index) => {
     addStatusItem(`${transformer.name} Kesici`, transformer.state);
-    addStatusItem(`${transformer.name} TMŞ`, transformer.tms.state);
+    addStatusItem(`${transformer.name} Trafo`, transformer.tms.state);
     addStatusItem(`${transformer.name} Ayırıcı`, transformer.disconnector.state);
     addStatusItem(`${transformer.name} Topraklama`, transformer.topraklama.state);
   });
@@ -34,9 +34,8 @@ function addStatusItem(name, state) {
 }
 
 function updateSystemPower() {
-  console.log("System Power Update")
   const energizedTransformers = components.transformers.filter(
-    (t) => t.state && t.tms.state && t.disconnector.state && t.topraklama.state
+    (t) => t.state && t.tms.state && t.disconnector.state && !t.topraklama.state
   );
 
   const totalPower = energizedTransformers.reduce(
@@ -44,7 +43,6 @@ function updateSystemPower() {
     0
   );
   const totalCurrent = totalPower / (Math.sqrt(3) * components.mainCB.voltage);
-  console.log("Total current:",totalCurrent)
   document.getElementById("totalPower").textContent = `${totalPower} kVA`;
   document.getElementById("inputCurrent").textContent = `${totalCurrent.toFixed(
     1

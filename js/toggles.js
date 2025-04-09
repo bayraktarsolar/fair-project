@@ -1,4 +1,13 @@
-// Toggle functions for components
+function postStatusToIframe() {
+  const iframe = document.getElementById("statusIframe");
+  const message = {
+    type: "STATUS_UPDATE",
+    payload: components, // tüm komponent durumları burada
+  };
+  iframe.contentWindow.postMessage(message, "*"); // Güvenlik için "*" yerine spesifik domain yazılabilir
+}
+
+
 function toggleMainCB() {
   if (!canToggleComponent("mainCB")) {
     showWarning("Topraklama hattı kapalı olduğu için elektrik verilemiyor!");
@@ -7,14 +16,32 @@ function toggleMainCB() {
   toggleComponent("mainCB");
 }
 
+function updateTransformerDependencies(components) {
+  components.transformers.forEach((transformer, i) => {
+    transformer.tms.dependencies = components.manualMode.state
+      ? [`manualDisconnector${i + 2}`]
+      : [`disconnector${i + 2}`];
+  });
+}
+
 function toggleManualMode() {
   components.manualMode.state = !components.manualMode.state;
-  const manualSwitch = document.getElementById("manualModeSwitch");
-  if (manualSwitch) {
-    manualSwitch.classList.toggle("bg-green-500");
-    manualSwitch.classList.toggle("bg-gray-300");
+  const switchToggle = document.getElementById('switchToggle');
+  const button = document.getElementById("manualModeSwitch");
+  if (components.manualMode.state) {
+    switchToggle.classList.remove('translate-x-1');
+    switchToggle.classList.add('translate-x-6');
+    button.classList.remove('bg-gray-300');
+    button.classList.add('bg-green-500');
   }
-  
+  else{
+    switchToggle.classList.remove('translate-x-6');
+    switchToggle.classList.add('translate-x-1');
+    button.classList.remove('bg-green-500');
+    button.classList.add('bg-gray-300');
+  }
+
+  updateTransformerDependencies(components);
   // Update visual state of all manual disconnectors
   components.transformers.forEach((_, index) => {
     const manualDisc = document.getElementById(`manualDisconnector${index + 2}`);
@@ -23,31 +50,44 @@ function toggleManualMode() {
     }
   });
   
-  updateStatus();
+  
+  postStatusToIframe();
 }
 
 function showWarning(message) {
   alert(message);
 }
 
+function generateCircleText(item) {
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", item.x - 5);
+      circle.setAttribute("cy", item.y + 3);
+      circle.setAttribute("r", 5);
+      circle.setAttribute("fill", item.color);
+      
+      // Create text element
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("x", item.x);
+      text.setAttribute("y", item.y + 10);
+      text.setAttribute("class", "text-sm");
+      text.textContent = item.text;
+      return { circle, text };
+}
+
 function canToggleComponent(componentId, index = -1) {
-  console.log("Checking dependencies for", componentId, index);
-  
   // Check topraklama state first
   if (componentId !== "topraklama") {
     if (index >= 0) {
-      // For transformer components
-      if (!components.transformers[index].topraklama.state) {
-        return false; // Topraklama kapalı (kırmızı) ise elektrik geçemez
+      // Topraklama açıkken elektrik geçemez
+      if (components.transformers[index].topraklama.state) {
+        return false;
       }
     } else {
-      // For main components
-      if (!components.topraklama.state) {
-        return false; // Ana topraklama kapalı (kırmızı) ise elektrik geçemez
+      if (components.topraklama.state) {
+        return false;
       }
     }
   }
-
   // Check dependencies
   let component;
   if (index >= 0) {
@@ -55,11 +95,11 @@ function canToggleComponent(componentId, index = -1) {
   } else {
     component = components[componentId];
   }
-
+  
   if (!component || !component.dependencies) {
     return true;
   }
-
+  
   // Check if all dependencies are energized
   return component.dependencies.every(dep => {
     if (dep.startsWith("cb")) {
@@ -69,6 +109,10 @@ function canToggleComponent(componentId, index = -1) {
     if (dep.startsWith("disconnector")) {
       const tIndex = parseInt(dep.replace("disconnector", "")) - 2;
       return components.transformers[tIndex].disconnector.state;
+    }
+    if(dep.startsWith("manualDisconnector")) {
+      const tIndex = parseInt(dep.replace("manualDisconnector", "")) - 2;
+      return components.transformers[tIndex].manualDisconnector.state;
     }
     if (dep.startsWith("tms")) {
       const tIndex = parseInt(dep.replace("tms", "")) - 2;
@@ -89,7 +133,7 @@ function toggleTopraklama() {
   components.topraklama.state = newState;
   
   // De-energize components when topraklama is activated
-  if (!newState) {
+  if (newState) {
     components.mainCB.state = false;
     components.loadDisconnect.state = false;
     components.TMSwithEngine.state = false;
@@ -109,7 +153,7 @@ function toggleTopraklama() {
     });
   }
   
-  updateStatus();
+  postStatusToIframe();
 }
 
 function toggleTransformerTopraklama(index) {
@@ -121,15 +165,20 @@ function toggleTransformerTopraklama(index) {
 
   const currentState = topraklamaElement.classList.contains("energized");
   const newState = !currentState;
+  if (newState){
+    showWarning("Topraklama hattı kapalı olacağı için elektrik verilemiyor!");
+    return;
+  }
 
   updateTopraklamaVisual(topraklamaElement, newState);
   transformer.topraklama.state = newState;
-  updateStatus();
+  
+  postStatusToIframe();
 }
 
 function toggleTMSwithEngine() {
   if (!canToggleComponent("TMSwithEngine")) {
-    showWarning("Topraklama hattı kapalı olduğu için TMŞ açılamıyor!");
+    showWarning("Topraklama hattı kapalı olduğu için Akım Trafosu açılamıyor!");
     return;
   }
   const mainBusbar = document.getElementById("mainBusbar");
@@ -144,7 +193,8 @@ function toggleTMSwithEngine() {
     mainBusbar.classList.add("de-energized");
   }
   components.TMSwithEngine.state = newState;
-  updateStatus();
+  
+  postStatusToIframe();
   toggleComponent("TMSwithEngine");
   showTMSModal(-1, false);
 }
@@ -176,7 +226,8 @@ function toggleLoadDisconnect() {
   }
 
   components.loadDisconnect.state = newState;
-  updateStatus();
+  
+  postStatusToIframe();
 }
 
 function toggleMainBreaker() {
@@ -196,7 +247,8 @@ function toggleMainBreaker() {
   }
 
   components.mainCB.state = newState;
-  updateStatus();
+  
+  postStatusToIframe();
 }
 
 function toggleTransformer(index) {
@@ -229,13 +281,14 @@ function toggleTransformer(index) {
     }
 
     transformer.state = newState;
-    updateStatus();
+    
+  postStatusToIframe();
   }
 }
 
 function toggleTMS(index) {
   if (!canToggleComponent("tms", index)) {
-    showWarning("Topraklama hattı kapalı olduğu için TMŞ açılamıyor!");
+    showWarning("Topraklama hattı kapalı olduğu için Trafo açılamıyor!");
     return;
   }
 
@@ -257,7 +310,8 @@ function toggleTMS(index) {
     }
 
     transformer.tms.state = newState;
-    updateStatus();
+    
+  postStatusToIframe();
     showTMSModal(index, true);
   }
 }
@@ -285,7 +339,7 @@ function toggleManualDisconnector(index) {
     // Toggle the horizontal/vertical line
     const line = disconnector.querySelector(".disconnect-line");
     if (line) {
-      line.setAttribute("transform", newState ? "rotate(90 175 280)" : "");
+      line.setAttribute("transform", newState ? "rotate(90 180 280)" : "");
     }
 
     if (newState) {
@@ -297,7 +351,8 @@ function toggleManualDisconnector(index) {
     }
 
     transformer.manualDisconnector.state = newState;
-    updateStatus();
+    
+  postStatusToIframe();
   }
 }
 
@@ -331,7 +386,8 @@ function toggleDisconnector(index) {
     }
 
     transformer.disconnector.state = newState;
-    updateStatus();
+    // 
+  postStatusToIframe();
   }
 }
 
@@ -349,7 +405,6 @@ function updateTopraklamaVisual(element, state) {
         topraklamaLine.setAttribute("transform", "rotate(45 70 440)");
       }
       topraklamaLine.classList.remove("open");
-      console.log("closed");
       topraklamaLine.classList.add("closed");
     }
   } else {
@@ -359,7 +414,6 @@ function updateTopraklamaVisual(element, state) {
     // Update topraklama line
     const topraklamaLine = element.querySelector(".topraklama-line");
     if (topraklamaLine) {
-      console.log("open");
       if (topraklamaLine.classList.contains("transformer")) {
         topraklamaLine.setAttribute("transform", "");
       } else {
@@ -405,5 +459,5 @@ function toggleComponent(id) {
     components[id].state = newState;
   }
 
-  updateStatus();
+  postStatusToIframe();
 }

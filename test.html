@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Electrical Single-Line Diagram Monitoring System</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="js/style.css">
-    <style>
-      
-    </style>
+    <link rel="stylesheet" href="js/style.css" />
   </head>
   <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8">
@@ -21,9 +18,15 @@
         <div class="p-4 bg-gray-100">
           <div class="flex items-center">
             <span class="mr-3 font-medium">Manuel Ayırıcı Modu:</span>
-            <button id="manualModeSwitch" onclick="toggleManualMode()" class="relative inline-flex items-center h-6 rounded-full w-11 bg-gray-300">
-              <span class="sr-only">Manuel Ayırıcı Modunu Aç/Kapa</span>
-              <span class="translate-x-1 inline-block w-4 h-4 transform bg-white rounded-full transition-transform duration-200 ease-in-out"></span>
+            <button
+              id="manualModeSwitch"
+              onclick="toggleManualMode()"
+              class="relative inline-flex items-center h-6 w-11 rounded-full bg-gray-300 transition-colors duration-300"
+            >
+              <span
+                id="switchToggle"
+                class="inline-block w-4 h-4 transform bg-white rounded-full transition-transform duration-300 translate-x-1"
+              ></span>
             </button>
           </div>
         </div>
@@ -33,34 +36,112 @@
           <!-- SVG Diagram -->
           <svg id="diagram" viewBox="0 0 1200 800" class="w-full">
             <text x="50" y="170" class="text-sm">Kesicili Giriş Hücresi</text>
-            <rect x="60" y="180" width="80" height="300" class="transformer-group-box"></rect>
-            
+            <rect
+              x="60"
+              y="180"
+              width="80"
+              height="300"
+              class="transformer-group-box"
+            ></rect>
+            <g id="redresorInfo"></g>
+
             <!-- Main Input Circuit Breaker -->
-            <g id="mainCB" class="component breaker de-energized" onclick="toggleMainCB()">
+            <g
+              id="mainCB"
+              class="component breaker de-energized"
+              onclick="toggleMainCB()"
+            >
               <line x1="50" y1="200" x2="100" y2="200" stroke-width="2"></line>
               <line x1="100" y1="200" x2="100" y2="250" stroke-width="2"></line>
-              <rect x="90" y="250" width="20" height="20" fill="white" stroke-width="2"></rect>
+              <rect
+                x="90"
+                y="250"
+                width="20"
+                height="20"
+                fill="white"
+                stroke-width="2"
+              ></rect>
               <text x="70" y="270" class="text-sm">26.4kV, 630A</text>
             </g>
 
-            <g id="loadDisconnect" class="component de-energized" onclick="toggleLoadDisconnect()">
+            <g
+              id="loadDisconnect"
+              class="component de-energized"
+              onclick="toggleLoadDisconnect()"
+            >
               <line x1="100" y1="270" x2="100" y2="380" stroke-width="2"></line>
-              <rect x="90" y="380" width="20" height="20" class="disconnect-box"></rect>
-              <line x1="95" y1="390" x2="105" y2="390" class="disconnect-line"></line>
+              <rect
+                x="90"
+                y="380"
+                width="20"
+                height="20"
+                class="disconnect-box"
+              ></rect>
+              <line
+                x1="95"
+                y1="390"
+                x2="105"
+                y2="390"
+                class="disconnect-line"
+              ></line>
               <text x="10" y="405" class="text-sm">Manuel Ayırıcı</text>
               <g>
-                <line x1="100" y1="400" x2="100" y2="440" stroke-width="2"></line>
-                <line x1="85" y1="440" x2="220" y2="440" stroke-width="2"></line>
-                <line x1="220" y1="440" x2="220" y2="350" stroke-width="2"></line>
-                <line x1="220" y1="340" x2="220" y2="200" stroke-width="2"></line>
-                  <line x1="220" y1="350" x2="220" y2="340" stroke-width="2" id="mainBreaker" class="breaker-line" onclick="toggleMainBreaker()"></line>
-                  <text x="220" y="360" class="text-sm">Main Breaker</text>
+                <line
+                  x1="100"
+                  y1="400"
+                  x2="100"
+                  y2="440"
+                  stroke-width="2"
+                ></line>
+                <line
+                  x1="85"
+                  y1="440"
+                  x2="220"
+                  y2="440"
+                  stroke-width="2"
+                ></line>
+                <line
+                  x1="220"
+                  y1="440"
+                  x2="220"
+                  y2="350"
+                  stroke-width="2"
+                ></line>
+                <line
+                  x1="220"
+                  y1="340"
+                  x2="220"
+                  y2="200"
+                  stroke-width="2"
+                ></line>
+                <line
+                  x1="220"
+                  y1="350"
+                  x2="220"
+                  y2="340"
+                  stroke-width="2"
+                  id="mainBreaker"
+                  class="breaker-line"
+                  onclick="toggleMainBreaker()"
+                ></line>
+                <text x="220" y="360" class="text-sm">Main Breaker</text>
               </g>
             </g>
 
             <!-- Main Topraklama -->
-            <g id="topraklama" class="component de-energized" onclick="toggleTopraklama()">
-              <line x1="70" y1="440" x2="80" y2="430" stroke-width="2" class="topraklama-line"></line>
+            <g
+              id="topraklama"
+              class="component de-energized"
+              onclick="toggleTopraklama()"
+            >
+              <line
+                x1="70"
+                y1="440"
+                x2="80"
+                y2="430"
+                stroke-width="2"
+                class="topraklama-line"
+              ></line>
               <line x1="70" y1="440" x2="70" y2="450" stroke-width="2"></line>
               <line x1="60" y1="450" x2="80" y2="450" stroke-width="2"></line>
               <line x1="63" y1="455" x2="77" y2="455" stroke-width="2"></line>
@@ -68,22 +149,51 @@
             </g>
             <g>
               <text x="180" y="170" class="text-sm">Akım Gerilim Hücresi</text>
-            <rect x="180" y="180" width="120" height="300" class="transformer-group-box"></rect>
+              <rect
+                x="180"
+                y="180"
+                width="120"
+                height="300"
+                class="transformer-group-box"
+              ></rect>
+              <g id="akimGerilimInfo"></g>
 
-            <!-- TMŞ with Engine -->
-            <g id="TMSwithEngine" class="component de-energized" onclick="toggleTMSwithEngine()">
-              <line x1="220" y1="200" x2="220" y2="220" stroke-width="2"></line>
-              <rect x="210" y="220" width="20" height="20" fill="white" stroke-width="2"></rect>
-              <circle cx="220" cy="230" r="10" fill="#FFF"></circle>
-              <text x="212" y="235" class="text-sm">3P</text>
-              <text x="230" y="230" class="text-sm">Akım Trafosu</text>
+              <!-- TMŞ with Engine -->
+              <g
+                id="TMSwithEngine"
+                class="component de-energized"
+                onclick="toggleTMSwithEngine()"
+              >
+                <line
+                  x1="220"
+                  y1="200"
+                  x2="220"
+                  y2="220"
+                  stroke-width="2"
+                ></line>
+                <rect
+                  x="210"
+                  y="220"
+                  width="20"
+                  height="20"
+                  fill="white"
+                  stroke-width="2"
+                ></rect>
+                <circle cx="220" cy="230" r="10" fill="#FFF"></circle>
+                <text x="212" y="235" class="text-sm">3P</text>
+                <text x="230" y="230" class="text-sm">Akım Trafosu</text>
+              </g>
             </g>
-            </g>
-            
 
             <!-- Main Busbar -->
             <g id="mainBusbar" class="component busbar de-energized">
-              <line x1="220" y1="200" x2="1100" y2="200" stroke-width="3"></line>
+              <line
+                x1="220"
+                y1="200"
+                x2="1100"
+                y2="200"
+                stroke-width="3"
+              ></line>
             </g>
 
             <!-- Transformer Groups -->
@@ -117,7 +227,7 @@
       <div class="modal-content">
         <span class="close-button" onclick="closeModal()">&times;</span>
         <div class="modal-header">
-          <h2 id="modalTitle" class="text-xl font-bold">TMŞ Bilgileri</h2>
+          <h2 id="modalTitle" class="text-xl font-bold">Trafo Bilgileri</h2>
         </div>
         <div class="modal-body">
           <div>
@@ -152,18 +262,48 @@
     <script src="js/modal.js"></script>
     <script src="js/status.js"></script>
     <script src="js/toggles.js"></script>
+    <script src="js/items.js"></script>
     <script>
       // Initialize transformers
       document.addEventListener("DOMContentLoaded", () => {
-        const transformers = Array.from({ length: 5 }, (_, i) => {
-          const xOffset = (i) * 120 + 160;
-          return `
+        const redresorInfo = document.getElementById("redresorInfo");
+        const akimGerilimInfo = document.getElementById("akimGerilimInfo");
+
+        kesiciItems.forEach((item) => {
+          const { circle, text } = generateCircleText(item);
+          redresorInfo.appendChild(circle);
+          redresorInfo.appendChild(text);
+        });
+        akimGerilimItems.forEach((item) => {
+          const { circle, text } = generateCircleText(item);
+          akimGerilimInfo.appendChild(circle);
+          akimGerilimInfo.appendChild(text);
+        });
+
+        const transformerContainer =
+          document.getElementById("transformerGroups");
+
+        let svgContent = "";
+        for (let i = 0; i < 5; i++) {
+          const xOffset = (i + 1) * 180;
+
+          svgContent += `
             <g class="transformer-unit" transform="translate(${xOffset}, 0)">
               <text x="180" y="170" class="text-sm">Trafo ${i + 1}</text>
               <rect x="160" y="180" width="80" height="300" class="transformer-group-box"></rect>
+              
+              ${transformerItems
+                .map((item) => {
+                  const { circle, text } = generateCircleText(item);
+                  return `<g>${circle.outerHTML}${text.outerHTML}</g>`;
+                })
+                .join("")}
+
 
               <!-- Kesici -->
-              <g id="cb${i + 2}" class="component breaker de-energized" onclick="toggleTransformer(${i})">
+              <g id="cb${
+                i + 2
+              }" class="component breaker de-energized" onclick="toggleTransformer(${i})">
                 <line x1="200" y1="200" x2="200" y2="220" stroke-width="2"></line>
                 <rect x="190" y="220" width="20" height="20" fill="white" stroke-width="2"></rect>
                 <line x1="195" y1="230" x2="205" y2="230" class="breaker-line" stroke-width="2"></line>
@@ -171,7 +311,9 @@
               </g>
 
               <!-- Manuel Ayırıcı -->
-              <g id="manualDisconnector${i + 2}" style="opacity: 0.5" class="component breaker de-energized" onclick="toggleManualDisconnector(${i})">
+              <g id="manualDisconnector${
+                i + 2
+              }" style="opacity: 0.5" class="component breaker de-energized" onclick="toggleManualDisconnector(${i})">
                 <line x1="180" y1="250" x2="180" y2="320" stroke-width="2"></line>
                 <rect x="170" y="270" width="20" height="20" class="disconnect-box"></rect>
                 <line x1="175" y1="280" x2="185" y2="280" class="disconnect-line"></line>
@@ -180,7 +322,9 @@
               </g>
 
               <!-- Ayırıcı -->
-              <g id="disconnector${i + 2}" class="component breaker de-energized" onclick="toggleDisconnector(${i})">
+              <g id="disconnector${
+                i + 2
+              }" class="component breaker de-energized" onclick="toggleDisconnector(${i})">
                 <rect x="210" y="270" width="20" height="20" class="disconnect-box"></rect>
                 <line x1="215" y1="280" x2="225" y2="280" class="disconnect-line"></line>
                 <line x1="220" y1="250" x2="220" y2="270" stroke-width="2"></line>
@@ -190,7 +334,9 @@
               </g>
 
               <!-- TMŞ -->
-              <g id="tms${i + 2}" class="component breaker de-energized" onclick="toggleTMS(${i})">
+              <g id="tms${
+                i + 2
+              }" class="component breaker de-energized" onclick="toggleTMS(${i})">
                 <line x1="200" y1="350" x2="200" y2="360" stroke-width="2"></line>
                 <rect x="190" y="360" width="20" height="20" fill="white" stroke-width="2"></rect>
                 <circle cx="200" cy="370" r="10" fill="#FFF"></circle>
@@ -198,7 +344,9 @@
               </g>
 
               <!-- Topraklama -->
-              <g id="topraklama${i + 2}" class="component de-energized" onclick="toggleTransformerTopraklama(${i})">
+              <g id="topraklama${
+                i + 2
+              }" class="component de-energized" onclick="toggleTransformerTopraklama(${i})">
                 <line x1="200" y1="380" x2="200" y2="460" stroke-width="2"></line>
                 <line x1="190" y1="460" x2="200" y2="460" stroke-width="2"></line>
                 <line x1="180" y1="460" x2="190" y2="450" stroke-width="2" class="topraklama-line transformer"></line>
@@ -209,9 +357,9 @@
               </g>
             </g>
           `;
-        }).join("\n");
+        }
 
-        document.getElementById("transformerGroups").innerHTML = transformers;
+        transformerContainer.innerHTML = svgContent;
         updateStatus();
       });
     </script>

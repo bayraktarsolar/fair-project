@@ -9,18 +9,17 @@ function showTMSModal(index, isTransformer = false) {
     current = transformer.rating / (Math.sqrt(3) * voltage);
     powerFactor = 0.95;
     
-    document.getElementById("modalTitle").textContent = `Trafo ${index + 1} TMŞ Bilgileri`;
+    document.getElementById("modalTitle").textContent = `Trafo ${index + 1} Trafo Bilgileri`;
     document.getElementById("modalTrafoNo").textContent = `Trafo ${index + 1}`;
     document.getElementById("modalStatus").textContent = transformer.tms.state ? "ENERJİLİ" : "ENERJİSİZ";
     document.getElementById("modalStatus").className = transformer.tms.state ? "text-green-600" : "text-red-600";
   } else {
-    console.log("TMS Modal")
     voltage = components.mainCB.voltage;
     current = components.mainCB.current;
     powerFactor = 0.95;
     
-    document.getElementById("modalTitle").textContent = "Ana TMŞ Bilgileri";
-    document.getElementById("modalTrafoNo").textContent = "Ana TMŞ";
+    document.getElementById("modalTitle").textContent = "Ana Trafo Bilgileri";
+    document.getElementById("modalTrafoNo").textContent = "Ana Trafo";
     document.getElementById("modalStatus").textContent = components.TMSwithEngine.state ? "ENERJİLİ" : "ENERJİSİZ";
     document.getElementById("modalStatus").className = components.TMSwithEngine.state ? "text-green-600" : "text-red-600";
   }
