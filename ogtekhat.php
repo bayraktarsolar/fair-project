@@ -1,4 +1,11 @@
 <!-- og-tek-hat.php -->
+<?php
+header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+?>
 <!DOCTYPE html>
 <html lang="tr">
 
@@ -158,7 +165,8 @@
         document.getElementById("transformerGroups");
 
       let svgContent = "";
-      for (let i = 0; i < 5; i++) {
+      const transformerCount = 5
+      for (let i = 0; i < transformerCount; i++) {
         const xOffset = (i + 1) * 180;
 
         svgContent += `
@@ -166,7 +174,7 @@
               <text x="180" y="170" class="text-sm">Trafo ${i + 1}</text>
               <rect x="160" y="180" width="80" height="300" class="transformer-group-box"></rect>
               
-              ${transformerItems
+              ${transformerItems[i+2]
             .map((item) => {
               const { circle, text } = generateCircleText(item);
               return `<g>${circle.outerHTML}${text.outerHTML}</g>`;
@@ -190,7 +198,9 @@
                 <rect x="170" y="270" width="20" height="20" class="disconnect-box"></rect>
                 <line x1="175" y1="280" x2="185" y2="280" class="disconnect-line"></line>
                 <line x1="180" y1="290" x2="180" y2="300" stroke-width="2"></line>
-                <line x1="180" y1="250" x2="220" y2="250" stroke-width="2"></line>
+                <line x1="180" y1="320" x2="200" y2="320" stroke-width="2"></line>
+                <line x1="180" y1="250" x2="200" y2="250" stroke-width="2"></line>
+                <line x1="200" y1="320" x2="200" y2="350" stroke-width="2"></line>
               </g>
 
               <!-- Ayırıcı -->
@@ -200,7 +210,8 @@
                 <line x1="215" y1="280" x2="225" y2="280" class="disconnect-line"></line>
                 <line x1="220" y1="250" x2="220" y2="270" stroke-width="2"></line>
                 <line x1="220" y1="290" x2="220" y2="320" stroke-width="2"></line>
-                <line x1="180" y1="320" x2="220" y2="320" stroke-width="2"></line>
+                <line x1="200" y1="250" x2="220" y2="250" stroke-width="2"></line>
+                <line x1="200" y1="320" x2="220" y2="320" stroke-width="2"></line>
                 <line x1="200" y1="320" x2="200" y2="350" stroke-width="2"></line>
               </g>
 
@@ -228,7 +239,7 @@
       }
 
       transformerContainer.innerHTML = svgContent;
-      postStatusToIframe();
+      loadComponentsFromLocalStorage();
     });
   </script>
 </body>

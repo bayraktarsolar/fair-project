@@ -1,0 +1,234 @@
+{
+    "manualMode": {
+        "state": false,
+        "name": "Manuel Ayırıcı Modu"
+    },
+    "mainCB": {
+        "state": true,
+        "name": "Ana Giriş Kesici",
+        "dependencies": [],
+        "voltage": 26.4,
+        "current": 25.2,
+        "power": 0
+    },
+    "loadDisconnect": {
+        "state": true,
+        "name": "Manuel Ayırıcı",
+        "dependencies": [
+            "mainCB"
+        ]
+    },
+    "TMSwithEngine": {
+        "state": true,
+        "name": "Akım Trafosu",
+        "dependencies": [
+            "loadDisconnect"
+        ]
+    },
+    "topraklama": {
+        "state": false,
+        "name": "Ana Topraklama",
+        "dependencies": [
+            "loadDisconnect"
+        ]
+    },
+    "mainBusbar": {
+        "state": false,
+        "name": "Ana Bara",
+        "dependencies": [
+            "TMSwithEngine"
+        ]
+    },
+    "transformers": [
+        {
+            "state": true,
+            "name": "Trafo 1",
+            "dependencies": [
+                "mainBusbar"
+            ],
+            "rating": 1600,
+            "current": 0,
+            "power": 0,
+            "manualDisconnector": {
+                "state": false,
+                "name": "Manuel Ayırıcı 1",
+                "dependencies": [
+                    "cb2"
+                ]
+            },
+            "disconnector": {
+                "state": true,
+                "name": "Ayırıcı 1",
+                "dependencies": [
+                    "cb2"
+                ]
+            },
+            "tms": {
+                "state": false,
+                "name": "Trafo 1",
+                "dependencies": [
+                    "disconnector2"
+                ]
+            },
+            "topraklama": {
+                "state": false,
+                "name": "Topraklama 1",
+                "dependencies": [
+                    "tms2"
+                ]
+            }
+        },
+        {
+            "state": false,
+            "name": "Trafo 2",
+            "dependencies": [
+                "mainBusbar"
+            ],
+            "rating": 1600,
+            "current": 0,
+            "power": 0,
+            "manualDisconnector": {
+                "state": false,
+                "name": "Manuel Ayırıcı 2",
+                "dependencies": [
+                    "cb3"
+                ]
+            },
+            "disconnector": {
+                "state": false,
+                "name": "Ayırıcı 2",
+                "dependencies": [
+                    "cb3"
+                ]
+            },
+            "tms": {
+                "state": false,
+                "name": "Trafo 2",
+                "dependencies": [
+                    "disconnector3"
+                ]
+            },
+            "topraklama": {
+                "state": false,
+                "name": "Topraklama 2",
+                "dependencies": [
+                    "tms3"
+                ]
+            }
+        },
+        {
+            "state": false,
+            "name": "Trafo 3",
+            "dependencies": [
+                "mainBusbar"
+            ],
+            "rating": 1600,
+            "current": 0,
+            "power": 0,
+            "manualDisconnector": {
+                "state": false,
+                "name": "Manuel Ayırıcı 3",
+                "dependencies": [
+                    "cb4"
+                ]
+            },
+            "disconnector": {
+                "state": false,
+                "name": "Ayırıcı 3",
+                "dependencies": [
+                    "cb4"
+                ]
+            },
+            "tms": {
+                "state": false,
+                "name": "Trafo 3",
+                "dependencies": [
+                    "disconnector4"
+                ]
+            },
+            "topraklama": {
+                "state": false,
+                "name": "Topraklama 3",
+                "dependencies": [
+                    "tms4"
+                ]
+            }
+        },
+        {
+            "state": false,
+            "name": "Trafo 4",
+            "dependencies": [
+                "mainBusbar"
+            ],
+            "rating": 1600,
+            "current": 0,
+            "power": 0,
+            "manualDisconnector": {
+                "state": false,
+                "name": "Manuel Ayırıcı 4",
+                "dependencies": [
+                    "cb5"
+                ]
+            },
+            "disconnector": {
+                "state": false,
+                "name": "Ayırıcı 4",
+                "dependencies": [
+                    "cb5"
+                ]
+            },
+            "tms": {
+                "state": false,
+                "name": "Trafo 4",
+                "dependencies": [
+                    "disconnector5"
+                ]
+            },
+            "topraklama": {
+                "state": false,
+                "name": "Topraklama 4",
+                "dependencies": [
+                    "tms5"
+                ]
+            }
+        },
+        {
+            "state": false,
+            "name": "Trafo 5",
+            "dependencies": [
+                "mainBusbar"
+            ],
+            "rating": 1600,
+            "current": 0,
+            "power": 0,
+            "manualDisconnector": {
+                "state": false,
+                "name": "Manuel Ayırıcı 5",
+                "dependencies": [
+                    "cb6"
+                ]
+            },
+            "disconnector": {
+                "state": false,
+                "name": "Ayırıcı 5",
+                "dependencies": [
+                    "cb6"
+                ]
+            },
+            "tms": {
+                "state": false,
+                "name": "Trafo 5",
+                "dependencies": [
+                    "disconnector6"
+                ]
+            },
+            "topraklama": {
+                "state": false,
+                "name": "Topraklama 5",
+                "dependencies": [
+                    "tms6"
+                ]
+            }
+        }
+    ]
+}
