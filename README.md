@@ -146,7 +146,7 @@ Bu proje MIT Lisansı ile lisanslanmıştır. Daha fazla bilgi için `LICENSE` d
 
 ## İletişim
 
-Herhangi bir sorunuz veya öneriniz varsa, lütfen [email@example.com](mailto:muhsin.kilic@bayraktarsolar.com) adresinden bizimle iletişime geçin.
+Herhangi bir sorunuz veya öneriniz varsa, lütfen [muhsin.kilic@bayraktarsolar.com](mailto:muhsin.kilic@bayraktarsolar.com) adresinden bizimle iletişime geçin.
 
 ![image](https://github.com/user-attachments/assets/16b31fca-88fd-46cd-a388-d7f865bf5e74)
 ![image](https://github.com/user-attachments/assets/638aa0ee-5372-4a7c-8942-f528b09f823e)
